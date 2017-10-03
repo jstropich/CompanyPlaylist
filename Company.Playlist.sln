@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Company.Playlist", "Company.Playlist\Company.Playlist.csproj", "{012BE6DF-22C9-40F3-A92A-BACB99909464}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Company.Playlist.Test", "Company.Playlist.Test\Company.Playlist.Test.csproj", "{4DA941DF-ECE4-4DC9-A482-8544882FB25E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{012BE6DF-22C9-40F3-A92A-BACB99909464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{012BE6DF-22C9-40F3-A92A-BACB99909464}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{012BE6DF-22C9-40F3-A92A-BACB99909464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{012BE6DF-22C9-40F3-A92A-BACB99909464}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DA941DF-ECE4-4DC9-A482-8544882FB25E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DA941DF-ECE4-4DC9-A482-8544882FB25E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DA941DF-ECE4-4DC9-A482-8544882FB25E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DA941DF-ECE4-4DC9-A482-8544882FB25E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {53465CCB-2516-48A7-AD4F-0A22510D7587}
+	EndGlobalSection
+EndGlobal
