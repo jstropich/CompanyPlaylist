@@ -24,8 +24,7 @@ namespace Company.Playlist
             var timeTotal = new TimeSpan();
 
             Dictionary<string, bool> requesterHasAvailableSongs = GetRequestersSongAvailability(period);
-
-
+            
             timeTotal = SinglePassBuildList(playlist, timeLimit, timeTotal, requesterHasAvailableSongs);
 
             while (Requests.Exists(p => p.Length <= timeLimit.Subtract(timeTotal) && requesterHasAvailableSongs.ContainsKey(p.Requester)))
@@ -36,7 +35,6 @@ namespace Company.Playlist
                     timeTotal = AddSongToPlaylist(playlist, timeTotal, song);
             }
             
-
             return playlist;
         }
 
