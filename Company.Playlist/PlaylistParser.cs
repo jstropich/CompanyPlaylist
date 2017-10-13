@@ -7,6 +7,14 @@ namespace Company.Playlist
 {
     public class PlaylistParser
     {
+        private const int RequestSongTitleGroup = 1;
+        private const int RequestBandNameGroup = 2;
+        private const int RequestMinutesGroup = 3;
+        private const int RequestSecondsGroup = 4;
+        private const int RequestPersonGroup = 5;
+        private const int AvailablePersonGroup = 1;
+        private const int AvailableSectionGroup = 2;
+
         public List<SongRequest> GetSongRequests(IEnumerable<string> fileContents)
         {
             var requests = new List<SongRequest>();
@@ -17,10 +25,10 @@ namespace Company.Playlist
                 {
                     requests.Add(new SongRequest()
                     {
-                        SongTitle = matches[0].Groups[1].Value,
-                        Band = matches[0].Groups[2].Value,
-                        Length = new TimeSpan(0, int.Parse(matches[0].Groups[3].Value), int.Parse(matches[0].Groups[4].Value)),
-                        Requester = matches[0].Groups[5].Value.Trim()
+                        SongTitle = matches[0].Groups[RequestSongTitleGroup].Value,
+                        Band = matches[0].Groups[RequestBandNameGroup].Value,
+                        Length = new TimeSpan(0, int.Parse(matches[0].Groups[RequestMinutesGroup].Value), int.Parse(matches[0].Groups[RequestSecondsGroup].Value)),
+                        Requester = matches[0].Groups[RequestPersonGroup].Value.Trim()
                     });
                 }
             }
@@ -33,19 +41,16 @@ namespace Company.Playlist
             foreach(var line in fileContents)
             {
                 MatchCollection matches = Regex.Matches(line, @"([\w\s]+) is available for section (.*)");
-                if (matches.Count == 1)
+                if ((matches.Count == 1) && (!availability.Exists(a => a.Name == matches[0].Groups[AvailablePersonGroup].Value)))
                 {
-                    if (!availability.Exists(a => a.Name == matches[0].Groups[1].Value))
-                    {
-                        bool[] isAvailable = new bool[2];
-                        isAvailable[0] = matches[0].Groups[2].Value.Contains("1");
-                        isAvailable[1] = matches[0].Groups[2].Value.Contains("2");
-                        availability.Add(new PersonAvailability()
-                                                {
-                                                    Name = matches[0].Groups[1].Value.Trim(),
-                                                    Available = isAvailable
-                                                });
-                    }
+                    bool[] isAvailable = new bool[2];
+                    isAvailable[0] = matches[0].Groups[AvailableSectionGroup].Value.Contains("1");
+                    isAvailable[1] = matches[0].Groups[AvailableSectionGroup].Value.Contains("2");
+                    availability.Add(new PersonAvailability()
+                                            {
+                                                Name = matches[0].Groups[AvailablePersonGroup].Value.Trim(),
+                                                Available = isAvailable
+                                            });
                 }
             }
             return availability;

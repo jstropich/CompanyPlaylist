@@ -9,6 +9,7 @@ namespace Company.Playlist
     {
         private List<SongRequest> Requests = new List<SongRequest>();
         private List<PersonAvailability> Availability = new List<PersonAvailability>();
+        TimeSpan TimeSectionLimit = new TimeSpan(0, 30, 00);
 
         public PlaylistBuilder(List<SongRequest> requests, List<PersonAvailability> availability)
         {
@@ -20,16 +21,15 @@ namespace Company.Playlist
         {
             period--;
             var playlist = new List<SongRequest>();
-            var timeLimit = new TimeSpan(0, 30, 00);
             var timeTotal = new TimeSpan();
 
             Dictionary<string, bool> requesterHasAvailableSongs = GetRequestersSongAvailability(period);
             
-            timeTotal = SinglePassBuildList(playlist, timeLimit, timeTotal, requesterHasAvailableSongs);
+            timeTotal = SinglePassBuildList(playlist, timeTotal, requesterHasAvailableSongs);
 
-            while (Requests.Exists(p => p.Length <= timeLimit.Subtract(timeTotal) && requesterHasAvailableSongs.ContainsKey(p.Requester)))
+            while (Requests.Exists(p => p.Length <= TimeSectionLimit.Subtract(timeTotal) && requesterHasAvailableSongs.ContainsKey(p.Requester)))
             {
-                var songsThatAreShortEnough = Requests.Where(r => r.Length <= timeLimit.Subtract(timeTotal) && requesterHasAvailableSongs.ContainsKey(r.Requester));
+                var songsThatAreShortEnough = Requests.Where(r => r.Length <= TimeSectionLimit.Subtract(timeTotal) && requesterHasAvailableSongs.ContainsKey(r.Requester));
                 var song = songsThatAreShortEnough.OrderBy(s => s.TimesPlayed).FirstOrDefault();
                 if (song != null)
                     timeTotal = AddSongToPlaylist(playlist, timeTotal, song);
@@ -38,7 +38,7 @@ namespace Company.Playlist
             return playlist;
         }
 
-        private TimeSpan SinglePassBuildList(List<SongRequest> playlist, TimeSpan timeLimit, TimeSpan timeTotal, Dictionary<string, bool> requesterHasAvailableSongs)
+        private TimeSpan SinglePassBuildList(List<SongRequest> playlist, TimeSpan timeTotal, Dictionary<string, bool> requesterHasAvailableSongs)
         {
             var keyList = new List<string>(requesterHasAvailableSongs.Keys);
             while (requesterHasAvailableSongs.Any(r => r.Value == false))
@@ -46,7 +46,7 @@ namespace Company.Playlist
                 foreach (var requester in keyList)
                 {
                     var song = Requests.FirstOrDefault(r => r.Requester == requester && r.TimesPlayed == 0);
-                    if (song != null && timeTotal.Add(song.Length) <= timeLimit)
+                    if (song != null && timeTotal.Add(song.Length) <= TimeSectionLimit)
                         timeTotal = AddSongToPlaylist(playlist, timeTotal, song);
                     else
                         requesterHasAvailableSongs[requester] = true;
